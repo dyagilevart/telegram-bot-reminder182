@@ -3,9 +3,19 @@ https://docs.nestjs.com/modules
 */
 
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-    imports: [],
+    imports: [
+        MongooseModule.forRootAsync({
+          imports: [ConfigModule],
+          useFactory: (config: ConfigService) => ({
+            uri: config.get('uri'),
+          }),
+          inject: [ConfigService],
+        }),
+      ],
     controllers: [],
     providers: [],
 })
